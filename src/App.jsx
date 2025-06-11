@@ -13,7 +13,7 @@ const ChatbotApp = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const API_BASE_URL = 'http://localhost:8000';
+  const API_BASE_URL = 'https://chatbot-poc-fkazdzdng0d0buc5.eastus2-01.azurewebsites.net/';
 
   // Scroll to bottom when messages change
   const scrollToBottom = () => {
