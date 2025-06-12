@@ -169,7 +169,7 @@ const ChatbotApp = () => {
           <div className="space-y-4 sm:space-y-6">
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                Username
+                UserName
               </label>
               <input
                 id="username"
