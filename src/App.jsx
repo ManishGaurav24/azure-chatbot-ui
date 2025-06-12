@@ -12,7 +12,8 @@ const ChatbotApp = () => {
   const [loginError, setLoginError] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const messagesEndRef = useRef(null); 
-  const API_BASE_URL = import.meta.env.VITE_BACKEND_PROD_URL;
+  // const API_BASE_URL = import.meta.env.VITE_BACKEND_PROD_URL;
+  const API_BASE_URL = 'https://chatbot-poc-fkazdzdng0d0buc5.eastus2-01.azurewebsites.net';
   console.log('API_BASE_URL:', API_BASE_URL);
   
   // Scroll to bottom when messages change
