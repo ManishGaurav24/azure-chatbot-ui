@@ -12,7 +12,7 @@ const ChatbotApp = () => {
   const [loginError, setLoginError] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const messagesEndRef = useRef(null); 
-  const API_BASE_URL = import.meta.env.VITE_BACKEND_PROD_URL || 'http://localhost:8000';
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_PROD_URL;
   
   // Scroll to bottom when messages change
   const scrollToBottom = () => {
