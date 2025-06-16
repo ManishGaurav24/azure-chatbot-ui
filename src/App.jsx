@@ -17,7 +17,7 @@ const App = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const messagesEndRef = useRef(null);
 
   const fetchAzureUser = async () => {
@@ -55,10 +55,12 @@ const App = () => {
     const response = await fetch(`${API_BASE_URL}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: newMsg.content,
-         session_id: sessionId,
-         user_id: userData.userId,
-         user_roles: userData.userRoles,}),
+      body: JSON.stringify({
+        message: newMsg.content,
+        session_id: sessionId,
+        user_id: userData.userId,
+        user_roles: userData.userRoles,
+      }),
     });
 
     const data = await response.json();
@@ -93,22 +95,36 @@ const App = () => {
   }, [isLoggedIn]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-screen flex flex-col">
       <Toaster position="top-right" reverseOrder={false} />
+
+      {/* Navbar always at the top */}
       <Navbar username={username} onLogout={handleLogout} />
-      <ChatWindow messages={messages} isLoading={isLoading} messagesEndRef={messagesEndRef} />
-      <ChatInput
-        inputMessage={inputMessage}
-        setInputMessage={setInputMessage}
-        handleSend={handleSend}
-        handleKeyDown={(e) => {
-          if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            handleSend();
-          }
-        }}
-        isLoading={isLoading}
-      />
+
+      {/* Chat window takes remaining vertical space and is scrollable */}
+      <div className="flex-1 overflow-y-auto px-4 py-2">
+        <ChatWindow
+          messages={messages}
+          isLoading={isLoading}
+          messagesEndRef={messagesEndRef}
+        />
+      </div>
+
+      {/* Chat input always at the bottom */}
+      <div className="px-4 py-2 bg-white">
+        <ChatInput
+          inputMessage={inputMessage}
+          setInputMessage={setInputMessage}
+          handleSend={handleSend}
+          handleKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              handleSend();
+            }
+          }}
+          isLoading={isLoading}
+        />
+      </div>
     </div>
   );
 };
