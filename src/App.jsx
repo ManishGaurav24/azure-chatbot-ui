@@ -26,7 +26,6 @@ const ChatbotApp = () => {
   const createSession = async () => {
     const res = await fetch(`${API_BASE_URL}/session/new`);
     const data = await res.json();
-    console.log('New session created:', data);
     return data.session_id;
   };
 
@@ -60,6 +59,7 @@ const ChatbotApp = () => {
     setSessionId('');
     // remove cookies or session storage if needed
     window.location.href = '/.auth/logout'; // Redirect to logout endpoint
+    window.location.reload(); // Reload to clear state
   };
 
   useEffect(() => {
