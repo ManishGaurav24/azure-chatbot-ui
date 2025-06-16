@@ -58,6 +58,8 @@ const ChatbotApp = () => {
     setIsLoggedIn(false);
     setMessages([]);
     setSessionId('');
+    // remove cookies or session storage if needed
+    window.location.href = '/.auth/logout'; // Redirect to logout endpoint
   };
 
   useEffect(() => {
