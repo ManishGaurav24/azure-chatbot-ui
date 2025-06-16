@@ -19,9 +19,22 @@ const ChatWindow = ({ messages, isLoading, messagesEndRef }) => {
             <div
               className={`inline-block px-4 py-2 rounded-lg whitespace-pre-line ${msg.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-black'
                 }`}
-            >
-              {msg.content}
-            </div>
+              dangerouslySetInnerHTML={{
+                __html: msg.content
+                  .replace(/</g, '&lt;') // escape HTML
+                  .replace(/>/g, '&gt;') // escape HTML
+                  .replace(/\n/g, '<br/>') // line breaks
+                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // bold pattern
+                  .replace(/__(.*?)__/g, '<em>$1</em>') // italic pattern
+                  .replace(/`(.*?)`/g, '<code>$1</code>') // inline code pattern
+                  .replace(/```(.*?)```/g, '<pre class="bg-gray-200 p-2 rounded">$1</pre>') // code block pattern 
+                  .replace(/### (.*?)/g, '<h3 class="text-lg font-semibold">$1</h3>') // sub-subheading pattern
+                  .replace(/## (.*?)/g, '<h2 class="text-xl font-bold">$1</h2>') // subheading pattern
+                  .replace(/# (.*?)/g, '<h1 class="text-2xl font-extrabold">$1</h1>') // main heading pattern
+                  .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg" />') // image pattern
+                  .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-blue-500 hover:underline">$1</a>'), // link pattern
+              }}
+            />
           </div>
         ))
       )}
