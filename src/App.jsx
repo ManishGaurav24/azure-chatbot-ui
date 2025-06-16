@@ -7,6 +7,11 @@ import { Toaster, toast } from 'react-hot-toast';
 const API_BASE_URL = 'https://chatbot-poc-fkazdzdng0d0buc5.eastus2-01.azurewebsites.net';
 
 const App = () => {
+  const [userData, setUserData] = useState({
+    userId: '',
+    userRoles: [],
+    userDetails: '',
+  });
   const [username, setUsername] = useState('user');
   const [sessionId, setSessionId] = useState('');
   const [messages, setMessages] = useState([]);
@@ -19,6 +24,11 @@ const App = () => {
     const res = await fetch("/.auth/me");
     const data = await res.json();
     if (data.clientPrincipal) {
+      setUserData({
+        userId: data.clientPrincipal.userId,
+        userRoles: data.clientPrincipal.userRoles || [],
+        userDetails: data.clientPrincipal.userDetails || '',
+      });
       setUsername(data.clientPrincipal.userDetails);
       setIsLoggedIn(true);
     }
@@ -45,7 +55,10 @@ const App = () => {
     const response = await fetch(`${API_BASE_URL}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: newMsg.content, session_id: sessionId }),
+      body: JSON.stringify({ message: newMsg.content,
+         session_id: sessionId,
+         user_id: userData.userId,
+         user_roles: userData.userRoles,}),
     });
 
     const data = await response.json();
