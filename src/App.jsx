@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import ChatWindow from './components/ChatWindow';
 import ChatInput from './components/ChatInput';
+import { Toaster, toast } from 'react-hot-toast';
 
 const API_BASE_URL = 'https://chatbot-poc-fkazdzdng0d0buc5.eastus2-01.azurewebsites.net';
 
-const ChatbotApp = () => {
+const App = () => {
   const [username, setUsername] = useState('user');
   const [sessionId, setSessionId] = useState('');
   const [messages, setMessages] = useState([]);
@@ -35,6 +36,7 @@ const ChatbotApp = () => {
       return;
     }
     if (!inputMessage.trim()) return;
+
     const newMsg = { role: 'user', content: inputMessage.trim() };
     setMessages((prev) => [...prev, newMsg]);
     setInputMessage('');
@@ -51,18 +53,16 @@ const ChatbotApp = () => {
     setIsLoading(false);
   };
 
-  // const startNewChat = async () => {
-  //   const newSessionId = await createSession();
-  //   setSessionId(newSessionId);
-  //   setMessages([]);
-  // };
-
   const handleLogout = () => {
     setIsLoggedIn(false);
     setMessages([]);
     setSessionId('');
-    // remove cookies or session storage if needed
-    window.location.href = '/.auth/logout'; // Redirect to logout endpoint
+    localStorage.clear();
+    sessionStorage.clear();
+    toast.success('Logged out successfully! Redirecting...');
+    setTimeout(() => {
+      window.location.href = '/.auth/logout?post_logout_redirect_uri=/';
+    }, 1500);
   };
 
   useEffect(() => {
@@ -81,6 +81,7 @@ const ChatbotApp = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Toaster position="top-right" reverseOrder={false} />
       <Navbar username={username} onLogout={handleLogout} />
       <ChatWindow messages={messages} isLoading={isLoading} messagesEndRef={messagesEndRef} />
       <ChatInput
@@ -99,4 +100,4 @@ const ChatbotApp = () => {
   );
 };
 
-export default ChatbotApp;
+export default App;
