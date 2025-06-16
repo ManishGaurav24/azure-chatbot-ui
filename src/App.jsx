@@ -32,7 +32,7 @@ const App = () => {
 
   const handleSend = async () => {
     if (!isLoggedIn) {
-      alert('Please log in to send messages.');
+      toast.error('Please log in to send messages.');
       return;
     }
     if (!inputMessage.trim()) return;
