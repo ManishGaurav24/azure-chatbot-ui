@@ -11,7 +11,7 @@ const ChatbotApp = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const messagesEndRef = useRef(null);
 
   const fetchAzureUser = async () => {
@@ -30,6 +30,10 @@ const ChatbotApp = () => {
   };
 
   const handleSend = async () => {
+    if (!isLoggedIn) {
+      alert('Please log in to send messages.');
+      return;
+    }
     if (!inputMessage.trim()) return;
     const newMsg = { role: 'user', content: inputMessage.trim() };
     setMessages((prev) => [...prev, newMsg]);
