@@ -99,7 +99,7 @@ const App = () => {
       <Toaster position="top-right" reverseOrder={false} />
 
       {/* Navbar always at the top */}
-      <Navbar username={username} onLogout={handleLogout} />
+      <Navbar username={username} userId={userData.userId} onLogout={handleLogout} />
 
       {/* Chat window takes remaining vertical space and is scrollable */}
       <div className="flex-1 overflow-y-auto px-4 py-2">
