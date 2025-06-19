@@ -1,13 +1,14 @@
 import React from 'react';
 import { MessageCircle, User, LogOut, Menu } from 'lucide-react';
 
-const Navbar = ({ username, userId, onLogout, onToggleSidebar }) => {
+const Navbar = ({ username, onLogout, onToggleSidebar, isSidebarOpen }) => {
     return (
         <nav className="bg-white shadow-sm border-b px-4 py-3 flex justify-between items-center">
             <div className="text-gray-600 hover:text-gray-800">
                 <Menu 
                     size={20} 
                     className="cursor-pointer"
+                    hidden={isSidebarOpen}
                     onClick={onToggleSidebar}
                 />
             </div>

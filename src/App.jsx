@@ -113,44 +113,53 @@ const App = () => {
     <div className="h-screen flex flex-col">
       <Toaster position="top-right" reverseOrder={false} />
 
-      <Navbar 
-        username={username} 
-        userId={userData.userId} 
-        onLogout={handleLogout}
-        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-      />
 
-      <Sidebar 
-        isOpen={isSidebarOpen} 
-        onClose={() => setIsSidebarOpen(false)}
-        userId={userData.userId}
-        onSessionSelect={handleSessionSelect}
-        onNewChat={handleNewChat}
-      />
+      {/* Main layout with Sidebar and Chat */}
+      <div className="flex flex-1 h-[calc(100vh-4rem)] overflow-hidden">
+        {isSidebarOpen && (
+          <div className="w-80 bg-gray-50 border-r overflow-y-auto">
+            <Sidebar
+              isOpen={isSidebarOpen}
+              onClose={() => setIsSidebarOpen(false)}
+              userId={userData.userId}
+              onSessionSelect={handleSessionSelect}
+              onNewChat={handleNewChat}
+            />
+          </div>
+        )}
 
-      {/* Chat window takes remaining vertical space and is scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-2">
-        <ChatWindow
-          messages={messages}
-          isLoading={isLoading}
-          messagesEndRef={messagesEndRef}
-        />
-      </div>
-
-      {/* Chat input always at the bottom */}
-      <div className="px-4 py-2 bg-white">
-        <ChatInput
-          inputMessage={inputMessage}
-          setInputMessage={setInputMessage}
-          handleSend={handleSend}
-          handleKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              handleSend();
-            }
-          }}
-          isLoading={isLoading}
-        />
+        <div className="flex flex-col flex-1">
+          <div className="bg-white shadow-sm border-b">
+            <Navbar
+              username={username}
+              userId={userData.userId}
+              onLogout={handleLogout}
+              onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+              isSidebarOpen={isSidebarOpen}
+            />
+          </div>
+          <div className="flex-1 overflow-y-auto px-4 py-2">
+            <ChatWindow
+              messages={messages}
+              isLoading={isLoading}
+              messagesEndRef={messagesEndRef}
+            />
+          </div>
+          <div className="px-4 py-2 bg-white">
+            <ChatInput
+              inputMessage={inputMessage}
+              setInputMessage={setInputMessage}
+              handleSend={handleSend}
+              handleKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
+              isLoading={isLoading}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
