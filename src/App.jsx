@@ -13,13 +13,12 @@ const App = () => {
     userRoles: [],
     userDetails: '',
   });
-  const [username, setUsername] = useState('user');
+  const [username, setUsername] = useState('');
   const [sessionId, setSessionId] = useState('');
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const messagesEndRef = useRef(null);
 
   const fetchAzureUser = async () => {
@@ -78,21 +77,19 @@ const App = () => {
     sessionStorage.clear();
     toast.success('Logged out successfully! Redirecting...');
     setTimeout(() => {
-      window.location.href = '/.auth/logout?post_logout_redirect_uri=/';
+      window.location.href = '/.auth/logout';
     }, 1500);
   };
 
   const handleSessionSelect = (session) => {
     setSessionId(session.session_id);
     setMessages(session.messages || []);
-    setIsSidebarOpen(false);
   };
 
   const handleNewChat = async () => {
     const newSessionId = await createSession();
     setSessionId(newSessionId);
     setMessages([]);
-    setIsSidebarOpen(false);
   };
 
   useEffect(() => {
@@ -113,31 +110,27 @@ const App = () => {
     <div className="h-screen flex flex-col">
       <Toaster position="top-right" reverseOrder={false} />
 
-
-      {/* Main layout with Sidebar and Chat */}
+      {/* Main layout with always-open Sidebar */}
       <div className="flex flex-1 h-[calc(100vh-4rem)] overflow-hidden">
-        {isSidebarOpen && (
-          <div className="w-80 bg-gray-50 border-r overflow-y-auto">
-            <Sidebar
-              isOpen={isSidebarOpen}
-              onClose={() => setIsSidebarOpen(false)}
-              userId={userData.userId}
-              onSessionSelect={handleSessionSelect}
-              onNewChat={handleNewChat}
-            />
-          </div>
-        )}
+        {/* Sidebar always visible */}
+        <div className="w-80 bg-gray-50 border-r overflow-y-auto">
+          <Sidebar
+            userId={userData.userId}
+            onSessionSelect={handleSessionSelect}
+            onNewChat={handleNewChat}
+          />
+        </div>
 
+        {/* Chat area */}
         <div className="flex flex-col flex-1">
           <div className="bg-white shadow-sm border-b">
             <Navbar
               username={username}
               userId={userData.userId}
               onLogout={handleLogout}
-              onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-              isSidebarOpen={isSidebarOpen}
             />
           </div>
+
           <div className="flex-1 overflow-y-auto px-4 py-2">
             <ChatWindow
               messages={messages}
@@ -145,6 +138,7 @@ const App = () => {
               messagesEndRef={messagesEndRef}
             />
           </div>
+
           <div className="px-4 py-2 bg-white">
             <ChatInput
               inputMessage={inputMessage}
