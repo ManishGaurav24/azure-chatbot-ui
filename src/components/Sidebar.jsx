@@ -69,15 +69,6 @@ const Sidebar = ({ userId, onSessionSelect, onNewChat }) => {
 
   return (
     <div className="fixed top-0 left-0 h-full w-80 bg-gray-50 z-50 flex flex-col border-r">
-      {/* Header */}
-      {/* <div className="flex items-center justify-between p-4 bg-gray-50 border-b">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-orange-300 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">📄</span>
-          </div>
-          <span className="font-semibold text-gray-800">Document Assistant</span>
-        </div>
-      </div> */}
 
       {/* New Chat Button */}
       <div className="p-2">
@@ -124,13 +115,13 @@ const Sidebar = ({ userId, onSessionSelect, onNewChat }) => {
                 <button
                   key={session.session_id}
                   onClick={() => onSessionSelect(session)}
-                  className="w-full text-left p-3 rounded-lg hover:bg-white hover:shadow-sm transition-all border border-transparent hover:border-gray-200 group"
+                  className="w-full text-left p-2 rounded-lg hover:bg-white hover:shadow-sm transition-all border border-transparent hover:border-gray-200 group"
                 >
                   <div className="flex items-start space-x-3">
                     <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors">
                       <MessageCircle size={14} className="text-blue-600" />
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 mx-2">
                       <p className="text-sm font-medium text-gray-900 truncate">
                         {getPreviewText(session.messages)}
                       </p>
