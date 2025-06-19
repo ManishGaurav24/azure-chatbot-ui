@@ -3,14 +3,14 @@ import { X, MessageCircle, Calendar } from 'lucide-react';
 
 const API_BASE_URL = 'https://chatbot-poc-fkazdzdng0d0buc5.eastus2-01.azurewebsites.net';
 
-const Sidebar = ({ isOpen, onClose, userId }) => {
+const Sidebar = ({ isOpen, onClose, userId, onSessionSelect, onNewChat }) => {
   const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
- 
-
   const fetchChatHistory = async () => {
+    if (!userId) return;
+    
     setLoading(true);
     setError(null);
     
@@ -36,11 +36,12 @@ const Sidebar = ({ isOpen, onClose, userId }) => {
     }
   };
 
+  // Fetch chat history when userId changes or component mounts
   useEffect(() => {
-    if (isOpen) {
+    if (userId) {
       fetchChatHistory();
     }
-  }, [isOpen]);
+  }, [userId]);
 
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
@@ -66,18 +67,6 @@ const Sidebar = ({ isOpen, onClose, userId }) => {
         : firstUserMessage.content;
     }
     return 'New conversation';
-  };
-
-  const handleNewChat = () => {
-    // Add your new chat logic here
-    console.log('Starting new chat');
-    // You might want to navigate to a new chat or clear current conversation
-  };
-
-  const handleSessionClick = (session) => {
-    // Add your session selection logic here
-    console.log('Selected session:', session.session_id);
-    // You might want to load this session's messages into your main chat area
   };
 
   return (
@@ -115,7 +104,7 @@ const Sidebar = ({ isOpen, onClose, userId }) => {
         {/* New Chat Button */}
         <div className="p-4">
           <button 
-            onClick={handleNewChat}
+            onClick={onNewChat}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
           >
             <MessageCircle size={18} />
@@ -156,7 +145,7 @@ const Sidebar = ({ isOpen, onClose, userId }) => {
                 {chatHistory.map((session) => (
                   <button
                     key={session.session_id}
-                    onClick={() => handleSessionClick(session)}
+                    onClick={() => onSessionSelect(session)}
                     className="w-full text-left p-3 rounded-lg hover:bg-white hover:shadow-sm transition-all border border-transparent hover:border-gray-200 group"
                   >
                     <div className="flex items-start space-x-3">

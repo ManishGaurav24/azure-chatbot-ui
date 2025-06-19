@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import ChatWindow from './components/ChatWindow';
 import ChatInput from './components/ChatInput';
+import Sidebar from './components/Sidebar';
 import { Toaster, toast } from 'react-hot-toast';
 
 const API_BASE_URL = 'https://chatbot-poc-fkazdzdng0d0buc5.eastus2-01.azurewebsites.net';
@@ -18,6 +19,7 @@ const App = () => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const messagesEndRef = useRef(null);
 
   const fetchAzureUser = async () => {
@@ -80,6 +82,19 @@ const App = () => {
     }, 1500);
   };
 
+  const handleSessionSelect = (session) => {
+    setSessionId(session.session_id);
+    setMessages(session.messages || []);
+    setIsSidebarOpen(false);
+  };
+
+  const handleNewChat = async () => {
+    const newSessionId = await createSession();
+    setSessionId(newSessionId);
+    setMessages([]);
+    setIsSidebarOpen(false);
+  };
+
   useEffect(() => {
     fetchAzureUser();
   }, []);
@@ -98,8 +113,20 @@ const App = () => {
     <div className="h-screen flex flex-col">
       <Toaster position="top-right" reverseOrder={false} />
 
-      {/* Navbar always at the top */}
-      <Navbar username={username} userId={userData.userId} onLogout={handleLogout} />
+      <Navbar 
+        username={username} 
+        userId={userData.userId} 
+        onLogout={handleLogout}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
+
+      <Sidebar 
+        isOpen={isSidebarOpen} 
+        onClose={() => setIsSidebarOpen(false)}
+        userId={userData.userId}
+        onSessionSelect={handleSessionSelect}
+        onNewChat={handleNewChat}
+      />
 
       {/* Chat window takes remaining vertical space and is scrollable */}
       <div className="flex-1 overflow-y-auto px-4 py-2">
