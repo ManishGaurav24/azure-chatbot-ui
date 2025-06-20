@@ -77,7 +77,7 @@ const App = () => {
     sessionStorage.clear();
     toast.success('Logged out successfully! Redirecting...');
     setTimeout(() => {
-      window.location.href = '/.auth/logout';
+      window.location.href = '/.auth/logout?post_logout_redirect_uri=/';
     }, 1500);
   };
 
