@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, MessageCircle, Calendar } from 'lucide-react';
 
-const API_BASE_URL = 'https://chatbot-poc-fkazdzdng0d0buc5.eastus2-01.azurewebsites.net';
+const API_BASE_URL = 'https://azure-chatbot-d7g8h3e2ekbcgkeh.canadacentral-01.azurewebsites.net';
 
 const Sidebar = ({ userId, onSessionSelect, onNewChat }) => {
   const [chatHistory, setChatHistory] = useState([]);

@@ -5,7 +5,7 @@ import ChatInput from './components/ChatInput';
 import Sidebar from './components/Sidebar';
 import { Toaster, toast } from 'react-hot-toast';
 
-const API_BASE_URL = 'https://chatbot-poc-fkazdzdng0d0buc5.eastus2-01.azurewebsites.net';
+const API_BASE_URL = 'https://azure-chatbot-d7g8h3e2ekbcgkeh.canadacentral-01.azurewebsites.net';
 
 const App = () => {
   const [userData, setUserData] = useState({
